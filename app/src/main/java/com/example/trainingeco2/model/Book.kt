@@ -4,7 +4,7 @@ import com.example.trainingeco2.utils.BookIdGenerator
 
 abstract class Book(
     val bookName: String, val author: String,
-    val publishYear: Int, val genre: String
+    val publishYear: Int = 1970, val genre: String
 ) {
 
     val id: Int = BookIdGenerator.getNextId()
