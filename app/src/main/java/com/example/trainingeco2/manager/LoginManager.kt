@@ -20,6 +20,8 @@ class LoginManager(private val libraryData: LibraryData) : ILoginManager {
         libraryData.addNewAccount(user, password)
     }
 
+    override fun logout() = run { CurrentUser.currentUser = null }
+
     fun handleUserSignIn() {
         println("\nEnter your ID to sign in to the library:")
 

@@ -71,7 +71,7 @@ fun handleUserMenuChoice(loginManager: LoginManager, libraryManager: LibraryMana
         when (val choice = readln().toIntOrNull()) {
             null -> println("Invalid input! Please enter a NUMBER")
             0 -> return println("Signing out...").also {
-                CurrentUser.currentUser = null
+                loginManager.logout()
                 handleUserSignMenu(loginManager, libraryManager)
             }
             in 1..5 -> libraryManager.apply {
