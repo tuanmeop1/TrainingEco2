@@ -27,12 +27,9 @@ fun handleAppMode(loginManager: LoginManager, libraryManager: LibraryManager) {
 
     while (CurrentUser.appMode == -1) {
         val modeChoice = readln().toIntOrNull()
-        if (modeChoice == null) {
-            println("Invalid input! Please enter a NUMBER")
-            continue
-        }
 
         when (modeChoice) {
+            null -> println("Invalid input! Please enter a NUMBER")
             0 -> CurrentUser.appMode = USER_MODE
             1 -> CurrentUser.appMode = MANAGER_MODE
             else -> println("Please enter the right number!")
@@ -45,61 +42,48 @@ fun handleAppMode(loginManager: LoginManager, libraryManager: LibraryManager) {
     }
 }
 
-fun handleUserMenuChoice(loginManager: LoginManager, libraryManager: LibraryManager) {
+fun handleUserSignMenu(loginManager: LoginManager, libraryManager: LibraryManager) {
+    MainMenu.showGuidance()
+
     while (true) {
-        MainMenu.showUserMenu()
-        println("\nEnter your choice (0-5):")
-        val choice = readln().toIntOrNull()
+        MainMenu.showSignMenu()
+        println("\nEnter your choice (0-3):")
 
-        if (choice == null) {
-            println("Invalid input! Please enter a NUMBER")
-            continue
-        }
-
-        libraryManager.apply {
-            when (choice) {
-                0 -> {
-                    println("Signing out...")
-                    CurrentUser.currentUser = null
-                    handleUserSignMenu(loginManager, libraryManager)
-                }
-
-                1 -> showAllBooks()
-                2 -> searchAndPrintBookByName()
-                3 -> borrowBook()
-                4 -> returnBook()
-                5 -> showBorrowedBooks(CurrentUser.currentUser!!)
-                else -> println("Invalid choice! Please enter a number between 0 and 5")
+        when (readln().toIntOrNull()) {
+            null -> println("Invalid input! Please enter a NUMBER")
+            0 -> return println("Exiting...").also {
+                CurrentUser.appMode = -1
+                handleAppMode(loginManager, libraryManager)
             }
+            1 -> MainMenu.showGuidance()
+            2 -> return loginManager.handleUserSignIn().also { handleUserMenuChoice(loginManager, libraryManager) }
+            3 -> loginManager.addNewAccount()
+            else -> println("Invalid choice! Please enter a number between 0 and 3")
         }
     }
 }
 
-fun handleUserSignMenu(loginManager: LoginManager, libraryManager: LibraryManager) {
-    MainMenu.showGuidance()
-    var exit = false
+fun handleUserMenuChoice(loginManager: LoginManager, libraryManager: LibraryManager) {
+    while (true) {
+        MainMenu.showUserMenu()
+        println("\nEnter your choice (0-5):")
 
-    while (!exit) {
-        MainMenu.showSignMenu()
-        println("\nEnter your choice (0-3):")
-        val choice = readln().toIntOrNull()
-
-        when (choice) {
+        when (val choice = readln().toIntOrNull()) {
             null -> println("Invalid input! Please enter a NUMBER")
-            0 -> {
-                println("Exiting...")
-                CurrentUser.appMode = -1
-                handleAppMode(loginManager, libraryManager)
-                exit = true
+            0 -> return println("Signing out...").also {
+                CurrentUser.currentUser = null
+                handleUserSignMenu(loginManager, libraryManager)
             }
-            1 -> MainMenu.showGuidance()
-            2 -> {
-                loginManager.handleUserSignIn()
-                handleUserMenuChoice(loginManager, libraryManager)
-                exit = true
+            in 1..5 -> libraryManager.apply {
+                when (choice) {
+                    1 -> showAllBooks()
+                    2 -> searchAndPrintBookByName()
+                    3 -> borrowBook()
+                    4 -> returnBook()
+                    5 -> showBorrowedBooks(CurrentUser.currentUser!!)
+                }
             }
-            3 -> loginManager.addNewAccount()
-            else -> println("Invalid choice! Please enter a number between 0 and 3")
+            else -> println("Invalid choice! Please enter a number between 0 and 5")
         }
     }
 }
@@ -110,12 +94,8 @@ fun handleManagerMenuChoice(libraryManager: LibraryManager) {
         println("\nEnter your choice (0-6):")
         val choice = readln().toIntOrNull()
 
-        if (choice == null) {
-            println("Invalid input! Please enter a NUMBER")
-            continue
-        }
-
         when (choice) {
+            null -> println("Invalid input! Please enter a NUMBER")
             0 -> {
                 println("Exit program...")
                 return
