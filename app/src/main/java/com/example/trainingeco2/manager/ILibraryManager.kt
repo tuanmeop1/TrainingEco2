@@ -1,4 +1,4 @@
-package com.example.trainingeco2.helper
+package com.example.trainingeco2.manager
 
 import com.example.trainingeco2.model.Book
 import com.example.trainingeco2.model.User

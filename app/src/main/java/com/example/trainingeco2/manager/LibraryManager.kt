@@ -3,7 +3,6 @@ package com.example.trainingeco2.manager
 import com.example.trainingeco2.data.LibraryData
 import com.example.trainingeco2.extensions.showBorrowingRecord
 import com.example.trainingeco2.extensions.showUserAccounts
-import com.example.trainingeco2.helper.ILibraryManager
 import com.example.trainingeco2.helper.InputHelper
 import com.example.trainingeco2.model.Book
 import com.example.trainingeco2.model.EBook

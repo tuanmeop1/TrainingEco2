@@ -3,7 +3,6 @@ package com.example.trainingeco2.manager
 import com.example.trainingeco2.data.LibraryData
 import com.example.trainingeco2.extensions.checkAccount
 import com.example.trainingeco2.extensions.isIdExisted
-import com.example.trainingeco2.helper.ILoginManager
 import com.example.trainingeco2.helper.InputHelper
 import com.example.trainingeco2.model.User
 import com.example.trainingeco2.utils.CurrentUser
