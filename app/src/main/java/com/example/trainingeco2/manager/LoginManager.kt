@@ -8,18 +8,13 @@ import com.example.trainingeco2.model.User
 import com.example.trainingeco2.utils.CurrentUser
 
 class LoginManager(private val libraryData: LibraryData) : ILoginManager {
-    private fun addNewUser(): User {
-        while (true) {
-            println("Please enter your name")
-            val userName = InputHelper.enterFullName("Full name")
-            val userID = libraryData.addNewUser(userName)
-            println("Sign up successfully, your ID is: $userID\n")
-            return User(userID, userName)
-        }
-    }
 
     override fun addNewAccount() {
-        val user = addNewUser()
+        println("Please enter your name")
+        val userName = InputHelper.enterFullName("Full name")
+        val userID = libraryData.addNewUser(userName)
+        println("Sign up successfully, your ID is: $userID\n")
+        val user = User(userID, userName)
         println("Please enter your password: ")
         val password = InputHelper.enterPassword()
         libraryData.addNewAccount(user, password)
