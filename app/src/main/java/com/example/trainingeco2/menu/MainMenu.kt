@@ -17,10 +17,14 @@ object MainMenu {
     fun showUserMenu() {
         println("\n===== USER MENU =====")
         println("1. Display all current books")
-        println("2. Search books")
-        println("3. Borrow a book")
-        println("4. Return a book")
-        println("5. View borrowing history")
+        println("2. Sorted book by name in ascending order")
+        println("3. Sorted book by publish year in ascending order")
+        println("4. Filter books published in the year of (input)")
+        println("4. Filter books published after the year of (input)")
+        println("6. Search books")
+        println("7. Borrow a book")
+        println("8. Return a book")
+        println("9. View borrowing history")
         println("0. Exit")
     }
 

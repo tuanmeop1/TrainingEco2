@@ -154,6 +154,22 @@ class LibraryManager(private val libraryData: LibraryData) : ILibraryManager {
         }
     }
 
+    //Higher order function: we pass comparator as a parameter
+    fun showSortedBookByName() {
+        val sortedBooks =
+            sortBooks(libraryData.books, BookSortSelectors.BY_NAME.getComparator())
+        println("Books sorted in ascending order by name:")
+        showAllBooks(sortedBooks)
+    }
+
+    //Higher order function: we pass comparator as a parameter
+    fun showSortedBookByYear() {
+        val sortedBooks =
+            sortBooks(libraryData.books, BookSortSelectors.BY_YEAR.getComparator())
+        println("Books sorted in ascending order by publish year:")
+        showAllBooks(sortedBooks)
+    }
+
     fun showUserAccounts() {
         libraryData.showUserAccounts()
     }
@@ -162,24 +178,49 @@ class LibraryManager(private val libraryData: LibraryData) : ILibraryManager {
         libraryData.showBorrowingRecord()
     }
 
+    //Higher-order function, lambda expression
+    private fun filterBooksByYear(books: Map<Book, Int>, year: Int, filterType: FilterType): Map<Book, Int> {
+        val filter: (Book) -> Boolean = when (filterType) {
+            FilterType.EQUAL -> { book -> book.publishYear == year }
+            FilterType.GREATER -> { book -> book.publishYear > year }
+            FilterType.LESS -> { book -> book.publishYear < year }
+        }
+
+        val filteredBooks = filterBooks(books, filter)
+        return filteredBooks
+    }
+
+    fun showFilteredBookByYear(books: Map<Book, Int>, filterType: FilterType) {
+        val year = InputHelper.enterPublishYear()
+
+        val filteredBooks = filterBooksByYear(books, year, filterType)
+
+        showAllBooks(filteredBooks)
+    }
+
     override fun getBorrowedBooks(user: User): List<Book> {
         return libraryData.borrowedBooks[user] ?: emptyList()
+    }
+
+    //Higher order function: we pass comparator as a parameter
+    override fun sortBooks(books: Map<Book, Int>, comparator: Comparator<Book>): Map<Book, Int> {
+        return books.toSortedMap(comparator)
+    }
+
+    override fun filterBooks(books: Map<Book, Int>, predicate: (Book) -> Boolean): Map<Book, Int> {
+        return books.filterKeys(predicate)
     }
 
     override fun removeBook(id: String): Boolean {
         return libraryData.removeBook(id)
     }
 
-    override fun showAllBooks() {
-        println("All Books in Library (${libraryData.books.size} total):")
-        for (book in libraryData.books) {
+    override fun showAllBooks(books: Map<Book, Int>) {
+        println("All Books in Library (${books.size} total):")
+        for (book in books) {
             book.key.printInfo()
             println("\tQuantity: ${book.value}")
         }
-    }
-
-    override fun isBookAvailable(book: Book): Boolean {
-        return libraryData.books.containsKey(book)
     }
 
     override fun searchBookByName(bookName: String): Map<Book, Int> {
