@@ -6,13 +6,14 @@ import com.example.trainingeco2.manager.LibraryManager
 import com.example.trainingeco2.manager.LoginManager
 import com.example.trainingeco2.menu.MainMenu
 import com.example.trainingeco2.utils.CurrentUser
+import kotlinx.coroutines.coroutineScope
 
 class LibraryApp(
     private val loginManager: LoginManager,
     private val libraryManager: LibraryManager,
     private val libraryData: LibraryData
 ) {
-    fun run() {
+    suspend fun run() = coroutineScope {
         println("This is Library Management System")
         println("Who are you???")
         println("Please Enter: 1 - If you are Manager, 0 - If you are User")
@@ -34,7 +35,7 @@ class LibraryApp(
         }
     }
 
-    private fun handleUserSignMenu() {
+    private suspend fun handleUserSignMenu() {
         MainMenu.showGuidance()
 
         while (true) {
@@ -61,7 +62,7 @@ class LibraryApp(
         }
     }
 
-    private fun handleUserMenuChoice() {
+    private suspend fun handleUserMenuChoice() {
         while (true) {
             MainMenu.showUserMenu()
             println("\nEnter your choice (0-7):")
@@ -89,7 +90,7 @@ class LibraryApp(
         }
     }
 
-    private fun handleManagerMenuChoice() {
+    private suspend fun handleManagerMenuChoice() {
         while (true) {
             MainMenu.showManagerMenu()
             println("\nEnter your choice (0-6):")

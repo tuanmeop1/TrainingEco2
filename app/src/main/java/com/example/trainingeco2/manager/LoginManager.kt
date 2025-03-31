@@ -6,10 +6,14 @@ import com.example.trainingeco2.extensions.isIdExisted
 import com.example.trainingeco2.helper.InputHelper
 import com.example.trainingeco2.model.User
 import com.example.trainingeco2.utils.CurrentUser
+import com.example.trainingeco2.utils.Delays
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
 
 class LoginManager(private val libraryData: LibraryData) : ILoginManager {
 
-    override fun addNewAccount() {
+    override suspend fun addNewAccount() = withContext(Dispatchers.IO) {
         println("Please enter your name")
         val userName = InputHelper.enterFullName("Full name")
         val userID = libraryData.addNewUser(userName)
@@ -17,12 +21,18 @@ class LoginManager(private val libraryData: LibraryData) : ILoginManager {
         val user = User(userID, userName)
         println("Please enter your password: ")
         val password = InputHelper.enterPassword()
+        println("Delaying ${Delays.PRIMARY_DATA_OPERATION}ms...")
+        delay(Delays.PRIMARY_DATA_OPERATION)
         libraryData.addNewAccount(user, password)
+        println("Account created successfully for ${user.name}.")
     }
 
-    override fun logout() = run { CurrentUser.currentUser = null }
+    override fun logout() {
+        println("User ${CurrentUser.currentUser?.name} signed out.")
+        CurrentUser.currentUser = null
+    }
 
-    fun handleUserSignIn() {
+    override suspend fun handleUserSignIn() {
         println("\nEnter your ID to sign in to the library:")
 
         while (true) {

@@ -1,6 +1,7 @@
 package com.example.trainingeco2.manager
 
 interface ILoginManager {
-    fun addNewAccount()
+    suspend fun addNewAccount()
     fun logout()
+    suspend fun handleUserSignIn()
 }
